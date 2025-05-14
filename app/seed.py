@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.database import engine, SessionLocal, Base
 from app.models import Estado, Municipio, Asentamiento
-from app.crud import (  # type: ignore
+from app.crud import (  
     crear_estado,
     get_estado_por_nombre,
     crear_municipio,
