@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: codigos_postales
+      POSTGRES_DB: cp_mexico
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -19,7 +19,7 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/codigos_postales
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/cp_mexico
 
 volumes:
   postgres_data:
