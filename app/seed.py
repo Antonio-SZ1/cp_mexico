@@ -1,7 +1,7 @@
 import csv
 from sqlalchemy.orm import Session
-from .database import engine, SessionLocal, Base
-from .models import Estado, Municipio, Asentamiento
+from app.database import engine, SessionLocal, Base
+from app.models import Estado, Municipio, Asentamiento
 from .crud import ( # type: ignore
     crear_estado, get_estado_por_nombre,
     crear_municipio, get_municipio_por_nombre_estado,
