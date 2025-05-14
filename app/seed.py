@@ -1,14 +1,18 @@
 import csv
 from sqlalchemy.orm import Session
+
 from app.database import engine, SessionLocal, Base
 from app.models import Estado, Municipio, Asentamiento
-from .crud import ( # type: ignore
-    crear_estado, get_estado_por_nombre,
-    crear_municipio, get_municipio_por_nombre_estado,
+from app.crud import (  
+    crear_estado,
+    get_estado_por_nombre,
+    crear_municipio,
+    get_municipio_por_nombre_estado,
     crear_asentamiento
 )
 
 def init_db():
+    # Elimina tablas si existen y las vuelve a crear
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
 
@@ -24,19 +28,24 @@ def seed_data(csv_path: str):
             zona = row[13].strip()
             cp = row[0].strip()
 
-            # Estado
+            # 1. Estado
             estado = get_estado_por_nombre(db, d_estado)
             if not estado:
                 estado = crear_estado(db, d_estado)
 
-            # Municipio
+            # 2. Municipio
             municipio = get_municipio_por_nombre_estado(db, d_mnpio, estado.id)
             if not municipio:
                 municipio = crear_municipio(db, d_mnpio, estado.id)
 
-            # Asentamiento
+            # 3. Asentamiento
             crear_asentamiento(
-                db, d_asenta, tipo, zona, cp, municipio.id
+                db,
+                nombre=d_asenta,
+                tipo=tipo,
+                zona=zona,
+                cp=cp,
+                municipio_id=municipio.id
             )
     db.close()
 
