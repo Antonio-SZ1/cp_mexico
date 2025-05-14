@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Consulta de Códigos Postales</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+  <div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
+    <h1 class="text-2xl font-bold mb-4">Consulta de Código Postal</h1>
+    <input id="cp" type="text" placeholder="Ingresa un código postal" class="w-full border px-4 py-2 mb-4">
+    <button onclick="consultar()" class="bg-blue-500 text-white px-4 py-2 rounded">Consultar</button>
+    <pre id="resultado" class="mt-4 text-sm"></pre>
+  </div>
+
+  <script>
+    async function consultar() {
+      const cp = document.getElementById('cp').value;
+      const [r1, r2] = await Promise.all([
+        fetch(`/api/codigo?cp=${cp}`),
+        fetch(`/api/resumen-zona?cp=${cp}`)
+      ]);
+      if (!r1.ok) {
+        document.getElementById('resultado').innerText = `Error: ${await r1.text()}`;
+        return;
+      }
+      const data = await r1.json();
+      const resumen = await r2.json();
+      document.getElementById('resultado').innerText =
+        "Asentamientos:\n" + JSON.stringify(data, null, 2) +
+        "\n\nResumen por zona:\n" + JSON.stringify(resumen, null, 2);
+    }
+  </script>
+</body>
+</html>
